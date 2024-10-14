@@ -11,4 +11,6 @@ public interface UserService {
     User findUserByEmail(String email);
 
     User findUserByUsername(String username);
+
+    boolean updateUserMembership(String username, String membershipName);
 }

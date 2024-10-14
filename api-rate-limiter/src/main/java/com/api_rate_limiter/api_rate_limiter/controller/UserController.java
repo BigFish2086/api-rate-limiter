@@ -21,9 +21,9 @@ public class UserController {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication != null && authentication.isAuthenticated() && authentication.getPrincipal() instanceof UserDetails) {
       UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-      return ResponseEntity.ok(userDetails); // Return the user details
+      return ResponseEntity.ok(userDetails);
     } else {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated"); // 401 if not authenticated
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
     }
   }
 }

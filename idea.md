@@ -14,7 +14,6 @@ This is a simple design for an API rate limiter Demo using:
 | POST   | `/api/v1/logout`        |
 | GET    | `/api/v1/subscriptions` |
 | POST   | `/api/v1/subscribe`     |
-| POST   | `/api/v1/unsubscribe`   |
 | GET    | `/api/v1/usage`         |
 | GET    | `/api/v1/ping`          |
 

@@ -51,6 +51,23 @@ public class UserServiceImpl implements UserService {
       return userRepository.findByUsername(username).orElse(null);
     }
 
+    @Override
+    public boolean updateUserMembership(String username, String membershipName) {
+      User user = userRepository.findByUsername(username).orElse(null);
+      if (user == null) {
+        return false;
+      }
+
+      MembershipLookup membership = membershipLookupRepository.findByMembershipName(membershipName);
+      if (membership == null) {
+        return false;
+      }
+
+      user.setMembershipLookup(membership);
+      userRepository.save(user);
+      return true;
+    }
+
     private UserDto convertEntityToDto(User user) {
         UserDto userDto = new UserDto();
         userDto.setUsername(user.getUsername());
