@@ -15,9 +15,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-// import org.springframework.web.cors.CorsConfiguration;
-// import org.springframework.web.cors.CorsConfigurationSource;
-// import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 public class SpringSecurity {
@@ -25,20 +27,15 @@ public class SpringSecurity {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    // private final AuthenticationProvider authenticationProvider;
+    private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     public SpringSecurity(
-        // AuthenticationProvider authenticationProvider,
+        AuthenticationProvider authenticationProvider,
         JwtAuthenticationFilter jwtAuthenticationFilter
     ) {
-      // this.authenticationProvider = authenticationProvider;
+      this.authenticationProvider = authenticationProvider;
       this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    }
-
-    @Bean
-    public static PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -46,38 +43,27 @@ public class SpringSecurity {
       http.csrf()
         .disable()
         .authorizeHttpRequests()
-        .requestMatchers("/api/v1/auth/**")
-        .permitAll()
-        .anyRequest()
-        .authenticated()
-        .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-        // .authenticationProvider(authenticationProvider)
+        .requestMatchers("/api/v1/auth/**").permitAll()
+        .anyRequest().authenticated()
+        .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and().authenticationProvider(authenticationProvider)
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
       return http.build();
     }
 
-    // @Bean
-    // CorsConfigurationSource corsConfigurationSource() {
-    //   CorsConfiguration configuration = new CorsConfiguration();
-    //
-    //   configuration.setAllowedOrigins(List.of("http://localhost:8005"));
-    //   configuration.setAllowedMethods(List.of("GET","POST"));
-    //   configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
-    //
-    //   UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    //
-    //   source.registerCorsConfiguration("/**",configuration);
-    //
-    //   return source;
-    // }
-     
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService)
-            .passwordEncoder(passwordEncoder());
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+      CorsConfiguration configuration = new CorsConfiguration();
+
+      configuration.setAllowedOrigins(List.of("http://127.0.0.1:8081"));
+      configuration.setAllowedMethods(List.of("GET","POST"));
+      configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
+
+      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+      source.registerCorsConfiguration("/**",configuration);
+
+      return source;
     }
 }
