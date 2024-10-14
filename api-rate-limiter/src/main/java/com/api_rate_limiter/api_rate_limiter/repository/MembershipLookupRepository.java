@@ -10,7 +10,6 @@ public interface MembershipLookupRepository extends JpaRepository<MembershipLook
     @Query("SELECT m FROM MembershipLookup m WHERE m.membershipName = :name")
     MembershipLookup findByMembershipName(String name);
 
-    // list all memberships
     @Query("SELECT m FROM MembershipLookup m")
     Iterable<MembershipLookup> findAllMemberships();
 }
