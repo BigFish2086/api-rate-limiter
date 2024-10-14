@@ -21,3 +21,4 @@ This is a simple design for an API rate limiter Demo using:
 
 ### TODO:
 - [ ] Add timeouts to `api/v1/login` to prevent brute force attacks.
+- [ ] Add Logger
