@@ -1,0 +1,5 @@
+# files
+.env
+
+# directories
+postgres_data
